@@ -35,7 +35,7 @@ Aqui está uma prévia de como o app ficou:
 
 ### 1. Clonar o repositório
 ```bash
-git clone 
+git clone https://github.com/lualys/instagram_clone.git
 cd mini_instagram_clone
 ````
 
