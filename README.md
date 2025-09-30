@@ -20,7 +20,7 @@ O objetivo é praticar **desenvolvimento mobile** e boas práticas de organizaç
 ## 📱 Captura de Tela
 Aqui está uma prévia de como o app ficou:  
 
-![assets\Demos.jpg](assets\Demos.JPG)
+![FOTO](assets\Demos.JPG)
 
 ---
 
