@@ -20,7 +20,7 @@ O objetivo é praticar **desenvolvimento mobile** e boas práticas de organizaç
 ## 📱 Captura de Tela
 Aqui está uma prévia de como o app ficou:  
 
-![FOTO](assets\Demos.JPG)
+![FOTO](https://github.com/lualys/instagram_clone/blob/main/assets/Demos.JPG)
 
 ---
 
