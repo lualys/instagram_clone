@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'dart:math';
 
 void main() {
   runApp(
-    DevicePreview(enabled: true, builder: (context) => const InstagramClone()),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const InstagramClone(),
+    ),
   );
 }
 
@@ -50,165 +54,253 @@ class InstagramHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // AppBar
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "Instagram",
-          style: TextStyle(
-            fontFamily: 'Billabong',
-            fontSize: 32,
-            color: Colors.black,
-          ),
-        ),
-        actions: const [
-          Icon(Icons.favorite_border, color: Colors.black),
-          SizedBox(width: 16),
-          Icon(Icons.send, color: Colors.black),
-          SizedBox(width: 12),
-        ],
-      ),
-
-      // Stories + Feed
+      appBar: _buildAppBar(),
       body: Column(
         children: [
-          // 🔹 Stories com "Seu story" no primeiro item
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: posts.length + 1, // +1 para o "Seu story"
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  // Primeiro story: Seu Story
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 32,
-                              backgroundImage: AssetImage(
-                                "assets/post4.jpg",
-                              ), // foto do usuário
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.blue,
-                                ),
-                                padding: const EdgeInsets.all(2),
-                                child: const Icon(
-                                  Icons.add,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        const Text("Seu story", style: TextStyle(fontSize: 12)),
-                      ],
-                    ),
-                  );
-                } else {
-                  final story = posts[index - 1];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 32,
-                          backgroundImage: AssetImage(story["avatar"]!),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          story["user"]!,
-                          style: const TextStyle(fontSize: 12),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-
+          StoriesWidget(posts: posts),
           const Divider(height: 1),
+          Expanded(child: FeedWidget(posts: posts)),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
 
-          // 🔹 Feed
-          Expanded(
-            child: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                final post = posts[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(post["avatar"]!),
-                      ),
-                      title: Text(
-                        post["user"]!,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(post["subtitle"]!),
-                      trailing: const Icon(Icons.more_vert),
-                    ),
-                    Image.asset(post["image"]!, fit: BoxFit.cover),
-                    Row(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.favorite_border),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.comment_outlined),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.send),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.bookmark_border),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      title: const Text(
+        "Instagram",
+        style: TextStyle(
+          fontFamily: 'Billabong',
+          fontSize: 32,
+          color: Colors.black,
+        ),
+      ),
+      actions: const [
+        Icon(Icons.favorite_border, color: Colors.black),
+        SizedBox(width: 16),
+        Icon(Icons.send, color: Colors.black),
+        SizedBox(width: 12),
+      ],
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.black,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.movie), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.shop), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+      ],
+    );
+  }
+}
+
+class AnimatedStoryBorder extends StatefulWidget {
+  final String imagePath;
+  final double size;
+  final bool isMyStory;
+  const AnimatedStoryBorder({
+    super.key,
+    required this.imagePath,
+    this.size = 64,
+    this.isMyStory = false,
+  });
+
+  @override
+  State<AnimatedStoryBorder> createState() => _AnimatedStoryBorderState();
+}
+
+class _AnimatedStoryBorderState extends State<AnimatedStoryBorder>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: _controller.value * 2 * pi,
+          child: Container(
+            width: widget.size,
+            height: widget.size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: SweepGradient(
+                colors: widget.isMyStory
+                    ? [Colors.blue, Colors.green, Colors.blue]
+                    : [Colors.red, Colors.orange, Colors.purple, Colors.red],
+                startAngle: 0,
+                endAngle: 2 * pi,
+              ),
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: CircleAvatar(
+                radius: widget.size / 2 - 3,
+                backgroundImage: AssetImage(widget.imagePath),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class StoriesWidget extends StatelessWidget {
+  final List<Map<String, String>> posts;
+  const StoriesWidget({super.key, required this.posts});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: posts.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) return _buildMyStory();
+          final story = posts[index - 1];
+          return _buildStory(story);
+        },
+      ),
+    );
+  }
+
+  Widget _buildMyStory() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              AnimatedStoryBorder(
+                imagePath: "assets/post4.jpg",
+                isMyStory: true,
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue,
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child: const Icon(Icons.add, size: 18, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          const Text("Seu story", style: TextStyle(fontSize: 12)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStory(Map<String, String> story) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          AnimatedStoryBorder(imagePath: story["avatar"]!),
+          const SizedBox(height: 6),
+          Text(
+            story["user"]!,
+            style: const TextStyle(fontSize: 12),
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
+    );
+  }
+}
 
-      // Bottom Navigation
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.movie), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shop), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
+class FeedWidget extends StatelessWidget {
+  final List<Map<String, String>> posts;
+  const FeedWidget({super.key, required this.posts});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        final post = posts[index];
+        return PostCard(post: post);
+      },
+    );
+  }
+}
+
+class PostCard extends StatelessWidget {
+  final Map<String, String> post;
+  const PostCard({super.key, required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage(post["avatar"]!),
+          ),
+          title: Text(
+            post["user"]!,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(post["subtitle"]!),
+          trailing: const Icon(Icons.more_vert),
+        ),
+        Image.asset(post["image"]!, fit: BoxFit.cover),
+        Row(
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.favorite_border),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.comment_outlined),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.send),
+            ),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.bookmark_border),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
