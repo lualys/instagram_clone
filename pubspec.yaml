@@ -1,19 +1,22 @@
 name: instagram_clone
-description: Clone da interface inicial do Instagram desenvolvido em Flutter.
+description: Clone do layout do Instagram criado com Flutter.
+publish_to: "none"
+
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.8
   device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
@@ -23,8 +26,14 @@ flutter:
     - assets/post4.jpg
     - assets/post5.jpg
     - assets/story.jpg
-
+    - assets/Lua.jpg
+    - assets/post2.jpg
+    - assets/post3.jpg
+    - assets/post6.jpg
+    - assets/Lana1.jpg
+    - assets/Lana2.jpg
+    - docs/preview.png
   fonts:
     - family: Billabong
       fonts:
-        - asset: assets/fonts/Billabong.ttf
+        - asset: /fonts/Billabong.otf

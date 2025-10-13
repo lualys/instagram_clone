@@ -1,43 +1,66 @@
-# Mini Instagram Clone
+# Instagram Clone
 
-Clone da interface inicial do Instagram desenvolvido em Flutter, incluindo Stories animados e feed de posts.  
-O objetivo é praticar desenvolvimento mobile, UI/UX e organização de projeto.
+Projeto Flutter que recria a interface principal do aplicativo Instagram, incluindo stories, feed e barra de navegação inferior.
+
+---
+
+## Estrutura do Projeto
+
+```
+
+instagram_clone/
+├── assets/
+│   ├── post1.jpg
+│   ├── post4.jpg
+│   ├── post5.jpg
+│   ├── story.jpg
+├── fonts/
+│   └── Billabong.otf
+├── docs/
+│   └── preview.png       ← screenshot do app
+├── lib/
+│   └── main.dart
+├── pubspec.yaml
+└── README.md
+
+````
 
 ---
 
 ## Funcionalidades
-- Stories animados com gradiente giratório, incluindo "Seu story"
+
+- Stories fixos no topo da tela, incluindo "Seu story"
 - Feed com cards de posts (avatar, nome, imagem, ações)
 - Foto de perfil no canto esquerdo de cada post
 - Barra inferior de navegação fixa
 - Interface responsiva usando Device Preview
+- Layout fiel ao Instagram original
 
 ---
 
 ## Tecnologias e Técnicas Utilizadas
+
 - Flutter e Dart
-- Widgets avançados: `ListView.builder`, `Stack`, `CircleAvatar`, `BottomNavigationBar`
+- Widgets: `ListView.builder`, `Stack`, `CircleAvatar`, `BottomNavigationBar`
 - Layouts responsivos: `Expanded`, `Column`, `Row`, `SizedBox`
-- Device Preview para testar em múltiplos dispositivos
+- Gradiente nos stories
+- Device Preview para simulação em múltiplos dispositivos
 - Boas práticas de UI/UX: alinhamento, tipografia e espaçamento
-- Modularização futura possível, mantendo todo o código limpo e organizado
+- Modularização futura possível, mantendo o código limpo e organizado
 
 ---
 
 ## Captura de Tela
 
-*Coloque aqui seus prints do app, por exemplo:*
-
-![Feed](assets/post1.jpg)
-![Stories](assets/story.jpg)
+![Preview do App](docs/preview.png)
 
 ---
 
-## Como Rodar o Projeto
+## Como Executar o Projeto
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/seu-usuario/instagram_clone.git
+git clone https://github.com/seuusuario/instagram_clone.git
 cd instagram_clone
 ````
 
@@ -55,29 +78,8 @@ flutter run
 
 ---
 
-## Estrutura do Projeto
+## Contato
 
-```
-lib/
- └── main.dart                # Código principal com stories animados e feed
-assets/
- ├── fonts/Billabong.ttf      # Fonte usada no app
- ├── post1.jpg
- ├── post4.jpg
- ├── post5.jpg
- └── story.jpg
-pubspec.yaml                  # Dependências e configuração de assets/fonte
-README.md                     # Documentação do projeto
-```
+Desenvolvido por **Luana Silva Figueiredo**
+Email: [luanasilvafigueiredo999@gmail.com](mailto:luanasilvafigueiredo999@gmail.com)
 
----
-
-## Contribuição
-
-Contribuições são bem-vindas:
-
-1. Faça um fork do projeto
-2. Crie uma branch com sua feature: `git checkout -b minha-feature`
-3. Commit suas alterações: `git commit -m 'Adicionei nova feature'`
-4. Faça push: `git push origin minha-feature`
-5. Abra um Pull Request
