@@ -60,7 +60,7 @@ instagram_clone/
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/seuusuario/instagram_clone.git
+git clone https://github.com/lualys/instagram_clone.git
 cd instagram_clone
 ````
 
