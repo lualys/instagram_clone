@@ -81,5 +81,6 @@ flutter run
 ## Contato
 
 Desenvolvido por **Luana Silva Figueiredo**
+
 Email: [luanasilvafigueiredo999@gmail.com](mailto:luanasilvafigueiredo999@gmail.com)
 
